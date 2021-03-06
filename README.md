@@ -1,5 +1,5 @@
 <p align="center">
-  <b>k8s-deprec8tions-templ8r</b>
+  <b>k8s-deprec8ions-templ8r</b>
 </p>
 <p align="center">
   <a href="https://github.com/cmacrae/k8s-deprec8ions-templ8r/blob/master/LICENSE">
@@ -72,7 +72,7 @@ docker run --rm -it \
 
 ## Implementations
 Some example templates can be found in the [`templates/`](templates) directory.  
-The [k8s-deprec8ions-templ8r template](tempaltes/k8s-deprec8ions-templ8r.rego) is used to provide policies for the [k8s-deprec8ions-templ8r](https://github.com/cmacrae/k8s-deprec8ions-templ8r) project: [k8s-deprec8ions-templ8r-deprecations](https://artifacthub.io/packages/helm/cmacrae/k8s-deprec8ions-templ8r-deprecations)
+The [kove template](tempaltes/k8s-deprec8ions-templ8r.rego) is used to provide policies for the [kove](https://github.com/cmacrae/kove) project: [kove-deprecations](https://artifacthub.io/packages/helm/cmacrae/kove-deprecations)
 
 ## Acknowledgements/Attributions
 The meat of this code is based off [kubepug](https://github.com/rikatz/kubepug), so a big thank you to [@rikatz](https://github.com/rikatz)
