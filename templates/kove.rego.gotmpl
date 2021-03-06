@@ -1,0 +1,50 @@
+package kove.deprecations
+
+get_default(val, key, _) = val[key]
+
+get_default(val, key, fallback) = fallback {
+	not val[key]
+}
+
+{{ range $_, $api := . }}
+{{- if $api.Deprecated }}
+main[return] {
+        {{- if $api.Group }}
+	input.apiVersion == "{{ $api.Group }}/{{ $api.Version }}"
+	{{- else }}
+	input.apiVersion == "{{ $api.Version }}"
+	{{- end }}
+	{{- if .Kind }}
+	input.kind == "{{ $api.Kind }}"
+	{{- end }}
+	return := {
+		"Name": input.metadata.name,
+		"Namespace": get_default(input.metadata, "namespace", "<undefined>"),
+		"Kind": input.kind,
+		"ApiVersion": input.apiVersion,
+		"RuleSet": "{{ extractDeprecation $api.Description }}",
+	}
+}
+{{ end }}
+
+{{- if $api.DeprecatedProperties }}
+{{- range $_, $property := $api.DeprecatedProperties }}
+main[return] {
+        {{- if $api.Group }}
+	input.apiVersion == "{{ $api.Group }}/{{ $api.Version }}"
+	{{- else }}
+	input.apiVersion == "{{ $api.Version }}"
+	{{- end }}
+	input.kind == "{{ $api.Kind }}"
+	input.spec.{{ $property.Name }}
+	return := {
+		"Name": input.metadata.name,
+		"Namespace": input.metadata.namespace,
+		"Kind": input.kind,
+		"ApiVersion": input.apiVersion,
+		"RuleSet": "{{ extractDeprecation $property.Description }}",
+	}
+}
+{{- end }}
+{{ end }}
+{{- end }}

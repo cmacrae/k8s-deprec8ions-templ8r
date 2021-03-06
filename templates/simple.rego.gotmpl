@@ -1,0 +1,32 @@
+package kove.deprecations
+
+{{ range $_, $api := . }}
+{{- if $api.Deprecated }}
+main[msg] {
+        {{- if $api.Group }}
+	input.apiVersion == "{{ $api.Group }}/{{ $api.Version }}"
+	{{- else }}
+	input.apiVersion == "{{ $api.Version }}"
+	{{- end }}
+	{{- if .Kind }}
+	input.kind == "{{ $api.Kind }}"
+	{{- end }}
+	msg := "{{ extractDeprecation $api.Description }}"
+}
+{{ end }}
+
+{{- if $api.DeprecatedProperties }}
+{{- range $_, $property := $api.DeprecatedProperties }}
+main[msg] {
+        {{- if $api.Group }}
+	input.apiVersion == "{{ $api.Group }}/{{ $api.Version }}"
+	{{- else }}
+	input.apiVersion == "{{ $api.Version }}"
+	{{- end }}
+	input.kind == "{{ $api.Kind }}"
+	input.spec.{{ $property.Name }}
+	msg := "{{ extractDeprecation $property.Description }}"
+}
+{{- end }}
+{{ end }}
+{{- end }}
